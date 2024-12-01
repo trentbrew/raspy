@@ -31,7 +31,9 @@
       "16": "images/icon-16.png",
       "48": "images/icon-48.png",
       "128": "images/icon-128.png"
-    }
+    },
+    "default_popup_width": 400,
+    "default_popup_height": 600
   },
   "background": {
     "service_worker": "background.js"
@@ -43,7 +45,7 @@
       "matches": ["https://*/*", "http://*/*"]
     }
   ],
-  "options_page": "options.htxml",
+  "options_page": "options.html",
   "icons": {
     "16": "images/icon-16.png",
     "48": "images/icon-48.png",

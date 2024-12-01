@@ -20,10 +20,15 @@ async function generateSystemPrompt(options) {
  * @returns {Promise<boolean>} - A promise that resolves to true if the model is readily available, false otherwise.
  */
 async function checkModelAvailability() {
-  const { available } = await ai.languageModel?.capabilities();
-  if (!available) console.error("❌ Model not available");
-  else console.log("🟢 Model available");
-  return available === "readily";
+  try {
+    const model = await window.gemini.getGenerativeModel({
+      model: "gemini-nano",
+    });
+    return !!model;
+  } catch (error) {
+    console.error("Error checking model availability:", error);
+    return false;
+  }
 }
 
 /**
@@ -32,19 +37,19 @@ async function checkModelAvailability() {
  * @returns {Promise<Object|string>} - A promise that resolves to the created session object or "No model available" if the model is not available.
  */
 async function createSession(options) {
-  if (await checkModelAvailability()) {
-    console.log("Model available. Generating session...");
-    console.log(defaults);
-    const session = await ai.languageModel.create({
-      systemPrompt: await generateSystemPrompt(options),
-      maxTokens: options.maxTokens || defaults.maxTokens,
-      temperature: options.temperature || defaults.temperature,
-      topK: options.topK || defaults.topK,
+  const isAvailable = await checkModelAvailability();
+  if (!isAvailable) return "No model available";
+
+  try {
+    const model = await window.gemini.getGenerativeModel({
+      model: "gemini-nano",
     });
-    console.log("Session created");
-    return session;
+    const systemPrompt = await generateSystemPrompt(options);
+    return { model, systemPrompt };
+  } catch (error) {
+    console.error("Error creating session:", error);
+    throw error;
   }
-  return "No model available";
 }
 
 /**
@@ -55,17 +60,29 @@ async function createSession(options) {
  * @throws {Error} - If no model is available.
  */
 async function generateCompletion(prompt, options = defaults) {
+  const session = await createSession(options);
+  if (session === "No model available") {
+    throw new Error("No model available");
+  }
+
   try {
-    const session = await createSession(options);
-    if (session === "No model available") throw new Error("No model available");
-    console.log("Generating completion...");
-    const result = await session.prompt(prompt);
-    console.log("result: ", result);
-    return result;
+    const result = await session.model.generateContent(prompt);
+    return result.response.text();
   } catch (error) {
     console.error("Error generating completion:", error);
     throw error;
   }
 }
 
-export default { checkModelAvailability, createSession, generateCompletion };
+export {
+  checkModelAvailability,
+  createSession,
+  generateCompletion,
+  generateSystemPrompt,
+};
+export default {
+  checkModelAvailability,
+  createSession,
+  generateCompletion,
+  generateSystemPrompt,
+};

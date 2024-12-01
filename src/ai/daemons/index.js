@@ -1,6 +1,3 @@
-import llm from "./llm";
-import { api } from "../helpers/api";
-
 import write from "./write";
 import rewrite from "./rewrite";
 import summarize from "./summarize";
@@ -9,6 +6,8 @@ import suggest from "./suggest";
 import probe from "./probe";
 import research from "./research";
 import devilsAdvocate from "./devilsAdvocate";
+
+import llm from "../helpers/llm";
 
 const checkStatus = async () => await llm.checkModelAvailability();
 
