@@ -1,4 +1,7 @@
 <script>
+  import { onMount } from "svelte";
+  import llm from "./ai";
+
   let query = "";
   let tableData = [
     { column1: "Row 1 Col 1", column2: "Row 1 Col 2", column3: "Row 1 Col 3" },
@@ -6,6 +9,12 @@
     { column1: "Row 3 Col 1", column2: "Row 3 Col 2", column3: "Row 3 Col 3" },
   ];
   let isQuerySubmitted = false;
+
+  onMount(() => {
+    console.log("App.svelte mounted");
+    console.log("Global AI Instance: ", ai);
+    console.log("Local AI Instance: ", llm);
+  });
 
   function submitQuery() {
     // Placeholder for query submission logic

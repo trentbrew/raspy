@@ -1,0 +1,1 @@
+this is for a general-purpose ai agent chrome extension leveraging the new built-in local gemini nano model. The aim is to create an agent that can perform tasks entirely local with no remote, cloud, or third party dependencies

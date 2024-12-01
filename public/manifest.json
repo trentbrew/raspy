@@ -1,11 +1,37 @@
 {
-  "name": "Raspy (Svelte)",
-  "version": "1.0",
-  "description": "Chrome extension + Svelte boilerplate",
   "manifest_version": 3,
-  "permissions": ["activeTab", "storage"],
+  "name": "Raspy (Svelte)",
+  "version": "0.0.1",
+  "description": "Chrome extension + Svelte boilerplate",
+  "permissions": [
+    "ttsEngine",
+    "history",
+    "tabs",
+    "activeTab",
+    "storage",
+    "bookmarks"
+  ],
+  "tts_engine": {
+    "voices": [
+      {
+        "voice_name": "Alice",
+        "lang": "en-US",
+        "event_types": ["start", "marker", "end"]
+      },
+      {
+        "voice_name": "Pat",
+        "lang": "en-US",
+        "event_types": ["end"]
+      }
+    ]
+  },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon-16.png",
+      "48": "images/icon-48.png",
+      "128": "images/icon-128.png"
+    }
   },
   "background": {
     "service_worker": "background.js"
@@ -17,5 +43,13 @@
       "matches": ["https://*/*", "http://*/*"]
     }
   ],
-  "options_page": "options.html"
+  "options_page": "options.htxml",
+  "icons": {
+    "16": "images/icon-16.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
 }
