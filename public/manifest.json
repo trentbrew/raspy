@@ -1,0 +1,21 @@
+{
+  "name": "Raspy (Svelte)",
+  "version": "1.0",
+  "description": "Chrome extension + Svelte boilerplate",
+  "manifest_version": 3,
+  "permissions": ["activeTab", "storage"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "css": ["content/styles.css"],
+      "js": ["content/index.js"],
+      "matches": ["https://*/*", "http://*/*"]
+    }
+  ],
+  "options_page": "options.html"
+}
